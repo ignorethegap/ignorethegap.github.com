@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Allow: /travel-recipes/
+Deny: /assets/
+Deny: /test/

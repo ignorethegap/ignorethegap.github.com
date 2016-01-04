@@ -1,0 +1,93 @@
+# .gitignore for jekyllized projects
+
+# Ignore hidden folders
+# This takes care of .tmp, .sass-cache, and many others
+.*/
+
+# OSX
+._*
+.AppleDouble
+.DS_Store
+.localized
+.LSOverride
+.Spotlight-V100
+.Trashes
+Icon
+
+# Windows
+Desktop.ini
+ehthumbs.db
+Thumbs.db
+
+# Linux
+*~
+
+# Tags
+# Ignore tags created by etags and ctags
+TAGS
+tags
+
+# Always-ignore files and folders #
+*.diff
+*.err
+*.log
+*.orig
+*.rej
+*.swn
+*.swo
+*.swp
+._*
+*~
+
+# Ignore packages #
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# Packages
+node_modules/*
+.tmp
+test/
+
+# Sublime
+*.sublime-project
+*.sublime-workspace
+*.sublime-projectcompletions
+
+/site/components/angular/
+/site/components/angular-route/
+/site/components/angular-socialshare/
+/site/components/angular-toggle-switch/
+
+/site/components/es5-shim/
+/site/components/bourbon/
+/site/components/normalize-css/
+/site/components/bootstrap/
+/site/components/essentialjs/
+/site/components/hammerjs/
+/site/components/jquery/
+/site/components/mediaelement/
+/site/components/snapjs/
+/site/components/togetherjs/
+/site/components/turnjs/
+/site/components/greensock/
+/site/components/responsiveSlides.js/
+/site/components/swiper/
+/site/components/swiper-3d-flow/
+/site/components/swiper-smooth-progress/
+/site/components/base64/
+/site/components/impress.js/
+/site/components/sockjs-client/
+
+# Output folders
+serve
+_site
+
+# hide the AWS and Rsync credentials file
+aws-credentials.json
+rsync-credentials.json

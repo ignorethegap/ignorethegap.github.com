@@ -1,5 +1,3 @@
-# .gitignore for jekyllized projects
-
 # Ignore hidden folders
 # This takes care of .tmp, .sass-cache, and many others
 .*/
@@ -39,52 +37,20 @@ tags
 ._*
 *~
 
-# Ignore packages #
-*.7z
-*.dmg
-*.gz
-*.iso
-*.jar
-*.rar
-*.tar
-*.zip
-
 # Packages
+jspm_packages/*
 node_modules/*
 .tmp
-test/
 
 # Sublime
 *.sublime-project
 *.sublime-workspace
 *.sublime-projectcompletions
 
-/site/components/angular/
-/site/components/angular-route/
-/site/components/angular-socialshare/
-/site/components/angular-toggle-switch/
-
-/site/components/es5-shim/
-/site/components/bourbon/
-/site/components/normalize-css/
-/site/components/bootstrap/
-/site/components/essentialjs/
-/site/components/hammerjs/
-/site/components/jquery/
-/site/components/mediaelement/
-/site/components/snapjs/
-/site/components/togetherjs/
-/site/components/turnjs/
-/site/components/greensock/
-/site/components/responsiveSlides.js/
-/site/components/swiper/
-/site/components/swiper-3d-flow/
-/site/components/swiper-smooth-progress/
-/site/components/base64/
-/site/components/impress.js/
-/site/components/sockjs-client/
-
 # Output folders
+coverage
+test/
+test/e2e/dist
 serve
 _site
 

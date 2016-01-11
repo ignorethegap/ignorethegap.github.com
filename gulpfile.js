@@ -17,10 +17,12 @@ var $ = require("gulp-load-plugins")();
 var reload = browserSync.reload;
 // And define a variable that BrowserSync uses in it"s function
 
+var paths = require('./site/build/paths');
+
 
 // deletes all files in the output path
 gulp.task('clean', function() {
-  return gulp.src([require('./build-paths').output])
+  return gulp.src([require('./site/build/paths').output])
     .pipe(require('vinyl-paths')(require('del')));
 });
 
@@ -32,18 +34,102 @@ gulp.task('lint', function() {
     .pipe($.eslint.failOnError());
 });
 
+var karma = require('karma').server;
+
+/**
+ * Run test once and exit
+ */
+gulp.task('test', function (done) {
+    karma.start({
+        configFile: __dirname + 'site/build/karma.conf.js',
+        singleRun: true
+    }, done);
+});
+
+/**
+ * Watch for file changes and re-run tests on each change
+ */
+gulp.task('tdd', function (done) {
+    karma.start({
+        configFile: __dirname + 'site/build/karma.conf.js'
+    }, done);
+});
+
+/**
+ * Run test once with code coverage and exit
+ */
+gulp.task('cover', function (done) {
+    karma.start({
+        configFile: __dirname + 'site/build/karma.conf.js',
+        singleRun: true,
+        reporters: ['coverage'],
+        preprocessors: {
+          'test/**/*.js': ['babel'],
+          'src/**/*.js': ['babel', 'coverage']
+        },
+        coverageReporter: {
+          type: 'html',
+          dir: 'build/reports/coverage'
+        }
+    }, done);
+});
+
+
+var webdriver_update = require('gulp-protractor').webdriver_update;
+var protractor = require("gulp-protractor").protractor;
+
+// for full documentation of gulp-protractor,
+// please check https://github.com/mllrsohn/gulp-protractor
+gulp.task('webdriver_update', webdriver_update);
+
+// transpiles files in
+// /test/e2e/src/ from es6 to es5
+// then copies them to test/e2e/dist/
+gulp.task('build-e2e', function () {
+  return gulp.src(paths.e2eSpecsSrc)
+    .pipe($.plumber())
+    .pipe($.babel())
+    .pipe(gulp.dest(paths.e2eSpecsDist));
+});
+
+// runs build-e2e task
+// then runs end to end tasks
+// using Protractor: http://angular.github.io/protractor/
+gulp.task('e2e', ['webdriver_update', 'build-e2e'], function(cb) {
+  return gulp.src(paths.e2eSpecsDist + "/*.js")
+    .pipe(protractor({
+        configFile: "site/build/protractor.conf.js",
+        args: ['--baseUrl', 'http://127.0.0.1:9000']
+    }))
+    .on('error', function(e) { throw e; });
+});
+
+
+// this task utilizes the browsersync plugin
+// to create a dev server instance
+// at http://localhost:9000
+gulp.task('serve', ['build'], function(done) {
+  browserSync({
+    online: false,
+    open: false,
+    port: 9000,
+    server: {
+      baseDir: ['.'],
+      middleware: function (req, res, next) {
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        next();
+      }
+    }
+  }, done);
+});
+
+
 
 // BUILD and WATCH
 
-var changed = require('gulp-changed');
-var plumber = require('gulp-plumber');
-var to5 = require('gulp-babel');
-var sourcemaps = require('gulp-sourcemaps');
-var paths = require('./build-paths');
-var compilerOptions = require('./babel-options');
+var compilerOptions = require('./site/build/babel-options');
 var assign = Object.assign || require('object.assign');
 var notify = require("gulp-notify");
-var browserSync = require('browser-sync');
 
 // transpiles changed es6 files to SystemJS format
 // the plumber() call prevents 'pipe breaking' caused
@@ -68,6 +154,7 @@ gulp.task('build-html', function() {
 
 // copies changed css files to the output directory
 gulp.task('build-css', function() {
+    //TODO cssnano
   return gulp.src(paths.css)
     .pipe($.changed(paths.output, {extension: '.css'}))
     .pipe(gulp.dest(paths.output))

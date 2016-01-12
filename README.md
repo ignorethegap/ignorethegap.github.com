@@ -1,6 +1,7 @@
 Ignore the Gap
 ==============
 
+If `npm install` gives you problems on OS X, give `xcode-select --install && npm install -g npm@latest` and `npm install -g node-gyp` a try.
 
 local development setup
 =======================

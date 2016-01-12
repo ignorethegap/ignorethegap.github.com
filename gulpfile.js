@@ -17,18 +17,18 @@ var $ = require("gulp-load-plugins")();
 var reload = browserSync.reload;
 // And define a variable that BrowserSync uses in it"s function
 
-var paths = require('./site/build/paths');
+var paths = require('./build/paths');
 
 
 // deletes all files in the output path
 gulp.task('clean', function() {
-  return gulp.src([require('./site/build/paths').output])
+  return gulp.src([require('./build/paths').output])
     .pipe(require('vinyl-paths')(require('del')));
 });
 
 // runs eslint on all .js files
 gulp.task('lint', function() {
-  return gulp.src(require('./build-paths').source)
+  return gulp.src(require('./build/paths').source)
     .pipe($.eslint())
     .pipe($.eslint.format())
     .pipe($.eslint.failOnError());
@@ -41,7 +41,7 @@ var karma = require('karma').server;
  */
 gulp.task('test', function (done) {
     karma.start({
-        configFile: __dirname + 'site/build/karma.conf.js',
+        configFile: __dirname + 'build/karma.conf.js',
         singleRun: true
     }, done);
 });
@@ -51,7 +51,7 @@ gulp.task('test', function (done) {
  */
 gulp.task('tdd', function (done) {
     karma.start({
-        configFile: __dirname + 'site/build/karma.conf.js'
+        configFile: __dirname + 'build/karma.conf.js'
     }, done);
 });
 
@@ -60,7 +60,7 @@ gulp.task('tdd', function (done) {
  */
 gulp.task('cover', function (done) {
     karma.start({
-        configFile: __dirname + 'site/build/karma.conf.js',
+        configFile: __dirname + 'build/karma.conf.js',
         singleRun: true,
         reporters: ['coverage'],
         preprocessors: {
@@ -98,7 +98,7 @@ gulp.task('build-e2e', function () {
 gulp.task('e2e', ['webdriver_update', 'build-e2e'], function(cb) {
   return gulp.src(paths.e2eSpecsDist + "/*.js")
     .pipe(protractor({
-        configFile: "site/build/protractor.conf.js",
+        configFile: "build/protractor.conf.js",
         args: ['--baseUrl', 'http://127.0.0.1:9000']
     }))
     .on('error', function(e) { throw e; });
@@ -127,7 +127,7 @@ gulp.task('serve', ['build'], function(done) {
 
 // BUILD and WATCH
 
-var compilerOptions = require('./site/build/babel-options');
+var compilerOptions = require('./build/babel-options');
 var assign = Object.assign || require('object.assign');
 var notify = require("gulp-notify");
 

@@ -3,6 +3,16 @@ Ignore the Gap
 
 If `npm install` gives you problems on OS X, give `xcode-select --install && npm install -g npm@latest` and `npm install -g node-gyp` a try.
 
+
+TODO
+
+http://developer.telerik.com/featured/choose-es6-modules-today/
+
+https://github.com/jspm/registry/wiki/Configuring-Packages-for-jspm
+
+
+
+
 local development setup
 =======================
 
